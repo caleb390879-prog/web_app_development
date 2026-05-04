@@ -3,29 +3,38 @@
 {% block title %}{{ recipe.title }} - 食譜收藏夾{% endblock %}
 
 {% block content %}
-<h2>{{ recipe.title }}</h2>
+<div class="card shadow-sm mb-4 border-0">
+    <div class="card-header bg-white d-flex flex-column flex-md-row justify-content-between align-items-md-center py-3 border-bottom">
+        <h2 class="mb-3 mb-md-0 text-danger fw-bold">{{ recipe.title }}</h2>
+        <div class="actions d-flex gap-2">
+            <a href="{{ url_for('recipe.edit_recipe', id=recipe.id) }}" class="btn btn-outline-secondary btn-sm">📝 編輯</a>
+            <form action="{{ url_for('recipe.delete_recipe', id=recipe.id) }}" method="POST" class="m-0">
+                <button type="submit" class="btn btn-outline-danger btn-sm" onclick="return confirm('確定要刪除這份食譜嗎？這個操作無法還原！')">🗑️ 刪除</button>
+            </form>
+        </div>
+    </div>
+    
+    <div class="card-body p-4">
+        <div class="mb-5">
+            <h4 class="border-bottom pb-2 mb-3 fw-bold text-dark">🛒 食材</h4>
+            <div class="bg-light p-3 rounded text-dark" style="white-space: pre-wrap; font-family: inherit; line-height: 1.8;">{{ recipe.ingredients or '尚未填寫食材' }}</div>
+        </div>
 
-<div class="actions">
-    <a href="{{ url_for('recipe.edit_recipe', id=recipe.id) }}">編輯</a>
-    <form action="{{ url_for('recipe.delete_recipe', id=recipe.id) }}" method="POST" style="display:inline;">
-        <button type="submit" onclick="return confirm('確定要刪除這份食譜嗎？')">刪除</button>
-    </form>
+        <div class="mb-5">
+            <h4 class="border-bottom pb-2 mb-3 fw-bold text-dark">🍳 烹飪步驟</h4>
+            <div class="bg-light p-3 rounded text-dark" style="white-space: pre-wrap; font-family: inherit; line-height: 1.8;">{{ recipe.steps or '尚未填寫步驟' }}</div>
+        </div>
+
+        <div class="mb-4">
+            <h4 class="border-bottom pb-2 mb-3 fw-bold text-dark">📝 私房筆記</h4>
+            <div class="bg-light p-3 rounded text-secondary" style="white-space: pre-wrap; font-family: inherit; line-height: 1.8;">{{ recipe.notes or '尚未留下筆記' }}</div>
+        </div>
+        
+        <div class="text-muted text-end small mt-5 pt-3 border-top">
+            建立時間: {{ recipe.created_at }} | 最後修改: {{ recipe.updated_at }}
+        </div>
+    </div>
 </div>
 
-<section class="ingredients">
-    <h3>食材</h3>
-    <pre>{{ recipe.ingredients }}</pre>
-</section>
-
-<section class="steps">
-    <h3>步驟</h3>
-    <pre>{{ recipe.steps }}</pre>
-</section>
-
-<section class="notes">
-    <h3>私房筆記</h3>
-    <pre>{{ recipe.notes }}</pre>
-</section>
-
-<a href="{{ url_for('recipe.index') }}">返回首頁</a>
+<a href="{{ url_for('recipe.index') }}" class="btn btn-link text-decoration-none px-0">← 返回食譜列表</a>
 {% endblock %}

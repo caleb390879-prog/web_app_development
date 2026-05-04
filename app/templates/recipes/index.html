@@ -3,24 +3,49 @@
 {% block title %}首頁 - 食譜收藏夾{% endblock %}
 
 {% block content %}
-<h2>我的食譜</h2>
-<!-- 搜尋列 -->
-<form action="{{ url_for('recipe.index') }}" method="GET">
-    <input type="text" name="q" placeholder="搜尋食譜或食材...">
-    <button type="submit">搜尋</button>
-</form>
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="mb-0 text-dark fw-bold">我的食譜</h2>
+    <a href="{{ url_for('recipe.new_recipe') }}" class="btn btn-danger">新增食譜</a>
+</div>
 
-<!-- 新增按鈕 -->
-<a href="{{ url_for('recipe.new_recipe') }}">新增食譜</a>
+<!-- 搜尋列 -->
+<div class="card shadow-sm mb-4 border-0">
+    <div class="card-body">
+        <form action="{{ url_for('recipe.index') }}" method="GET" class="m-0">
+            <div class="input-group">
+                <input type="text" class="form-control" name="q" placeholder="搜尋食譜或食材名稱..." value="{{ request.args.get('q', '') }}">
+                <button class="btn btn-outline-danger" type="submit">搜尋</button>
+                {% if request.args.get('q') %}
+                    <a href="{{ url_for('recipe.index') }}" class="btn btn-outline-secondary">清除</a>
+                {% endif %}
+            </div>
+        </form>
+    </div>
+</div>
 
 <!-- 食譜列表 -->
-<ul>
+<div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
     {% for recipe in recipes %}
-        <li>
-            <a href="{{ url_for('recipe.recipe_detail', id=recipe.id) }}">{{ recipe.title }}</a>
-        </li>
+        <div class="col">
+            <div class="card h-100 shadow-sm border-0 table-hover" style="transition: transform 0.2s;">
+                <div class="card-body">
+                    <h5 class="card-title fw-bold text-danger">{{ recipe.title }}</h5>
+                    <p class="card-text text-truncate text-muted mb-3"><small>更新於: {{ recipe.updated_at }}</small></p>
+                    <a href="{{ url_for('recipe.recipe_detail', id=recipe.id) }}" class="btn btn-outline-danger btn-sm w-100 stretched-link">檢視詳情</a>
+                </div>
+            </div>
+        </div>
     {% else %}
-        <li>目前沒有食譜</li>
+        <div class="col-12 text-center text-muted mt-5 py-5 bg-white rounded shadow-sm">
+            <p class="fs-5 mb-0">目前沒有找到任何食譜！</p>
+            <p class="small">點擊右上方「新增食譜」開始記錄您的第一道菜。</p>
+        </div>
     {% endfor %}
-</ul>
+</div>
+
+<style>
+.card:hover {
+    transform: translateY(-5px);
+}
+</style>
 {% endblock %}
