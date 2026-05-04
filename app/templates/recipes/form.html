@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block title %}{% if recipe %}編輯食譜{% else %}新增食譜{% endif %} - 食譜收藏夾{% endblock %}
+
+{% block content %}
+<h2>{% if recipe %}編輯食譜{% else %}新增食譜{% endif %}</h2>
+
+<form action="{% if recipe %}{{ url_for('recipe.update_recipe', id=recipe.id) }}{% else %}{{ url_for('recipe.create_recipe') }}{% endif %}" method="POST">
+    
+    <div>
+        <label for="title">食譜名稱：</label>
+        <input type="text" id="title" name="title" value="{{ recipe.title if recipe else '' }}" required>
+    </div>
+    
+    <div>
+        <label for="ingredients">食材：</label>
+        <textarea id="ingredients" name="ingredients" rows="5">{{ recipe.ingredients if recipe else '' }}</textarea>
+    </div>
+    
+    <div>
+        <label for="steps">步驟：</label>
+        <textarea id="steps" name="steps" rows="8">{{ recipe.steps if recipe else '' }}</textarea>
+    </div>
+    
+    <div>
+        <label for="notes">私房筆記：</label>
+        <textarea id="notes" name="notes" rows="4">{{ recipe.notes if recipe else '' }}</textarea>
+    </div>
+    
+    <button type="submit">儲存</button>
+    <a href="{{ url_for('recipe.index') }}">取消</a>
+</form>
+{% endblock %}

@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block title %}首頁 - 食譜收藏夾{% endblock %}
+
+{% block content %}
+<h2>我的食譜</h2>
+<!-- 搜尋列 -->
+<form action="{{ url_for('recipe.index') }}" method="GET">
+    <input type="text" name="q" placeholder="搜尋食譜或食材...">
+    <button type="submit">搜尋</button>
+</form>
+
+<!-- 新增按鈕 -->
+<a href="{{ url_for('recipe.new_recipe') }}">新增食譜</a>
+
+<!-- 食譜列表 -->
+<ul>
+    {% for recipe in recipes %}
+        <li>
+            <a href="{{ url_for('recipe.recipe_detail', id=recipe.id) }}">{{ recipe.title }}</a>
+        </li>
+    {% else %}
+        <li>目前沒有食譜</li>
+    {% endfor %}
+</ul>
+{% endblock %}

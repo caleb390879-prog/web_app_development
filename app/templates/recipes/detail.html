@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block title %}{{ recipe.title }} - 食譜收藏夾{% endblock %}
+
+{% block content %}
+<h2>{{ recipe.title }}</h2>
+
+<div class="actions">
+    <a href="{{ url_for('recipe.edit_recipe', id=recipe.id) }}">編輯</a>
+    <form action="{{ url_for('recipe.delete_recipe', id=recipe.id) }}" method="POST" style="display:inline;">
+        <button type="submit" onclick="return confirm('確定要刪除這份食譜嗎？')">刪除</button>
+    </form>
+</div>
+
+<section class="ingredients">
+    <h3>食材</h3>
+    <pre>{{ recipe.ingredients }}</pre>
+</section>
+
+<section class="steps">
+    <h3>步驟</h3>
+    <pre>{{ recipe.steps }}</pre>
+</section>
+
+<section class="notes">
+    <h3>私房筆記</h3>
+    <pre>{{ recipe.notes }}</pre>
+</section>
+
+<a href="{{ url_for('recipe.index') }}">返回首頁</a>
+{% endblock %}
